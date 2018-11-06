@@ -978,6 +978,7 @@ module Bundler
       @locked_gems.specs.reduce({}) do |requirements, locked_spec|
         name = locked_spec.name
         next requirements if @locked_gems.dependencies[name] != dependencies_by_name[name]
+        next requirements if dependencies_by_name[name].source.is_a?(Source::Path)
         dep = Gem::Dependency.new(name, ">= #{locked_spec.version}")
         requirements[name] = DepProxy.new(dep, locked_spec.platform)
         requirements
